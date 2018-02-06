@@ -1,5 +1,4 @@
-
-
+""" Classe di test per il modem (presumo) """
 
 from unittest.mock import MagicMock
 
@@ -12,7 +11,8 @@ from hlcs.modem import AtlantisModem
 
 
 class TestAtlantisModemController(TestCase):
-    
+
+    """ funzione per un test che va a buon fine """
     def testDone(self):
         request = MagicMock()
         serial = MagicMock()
@@ -25,6 +25,7 @@ class TestAtlantisModemController(TestCase):
         controller.handle_ring()
         request.done.assert_called_with()
         
+    """ funzione per un test che fallisce"""
     def testFail(self):
         request = MagicMock()
         

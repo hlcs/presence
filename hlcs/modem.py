@@ -13,6 +13,9 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+classe per la gestione del modem
 """
 
 import asyncio
@@ -89,9 +92,10 @@ class AtlantisModem(Modem):
 
 
 
+# classe per la gestioen dle modem atlantis
 class AtlantisModemController(ModemController):
 
-
+    
     def __init__(self, serial):
         self.serial = serial
 
@@ -128,7 +132,7 @@ class AtlantisModemController(ModemController):
             self.add_reader()
             logger.debug('setup complete, controller in listen mode')
             
-
+        #eccezione lanciata nell' errore della configuraizone dle modem
         except Exception as e:
             self.serial.close()
             self.request.fail(str(e))
@@ -168,7 +172,8 @@ class AtlantisModemController(ModemController):
             
         self.on_exit()
             
-            
+
+# main della configurazioneo del modem
 if __name__ == '__main__':
     m=AtlantisModem()
     m.check_connection()

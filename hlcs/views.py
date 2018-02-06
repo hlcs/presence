@@ -1,3 +1,7 @@
+""" Parte view del modello mvc su cui si basa django 
+(gestisce i dati del model e l' interazione dell' uente con essi)"""
+
+
 from django.shortcuts import render
 
 
