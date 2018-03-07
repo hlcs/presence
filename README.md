@@ -16,28 +16,41 @@ Client applications can interact with Presence using websockets
 
 	    sudo apt-get install python-virtualenv
 
-1. Create a python3.4 virtualenv inside project's directory and activate it
+1. Presence requires Python>=3.4. Create a python virtualenv inside project's directory specifying an appropriate version of python.
 
 	    virtualenv -p /usr/bin/python3.4 venv
+
+1. Activate the virtualenv.
+
 	    source venv/bin/activate
 
-2. Install the required modules
+1. Install the required modules
 
 	    pip install -r requirements.txt
 
-3. Create the db. Default is sqlite
+### Run the unit tests
+
+To check wether the development environment has been setup properly you should run the unit tests. Within the virtualenv run:
+
+			python manage.py test
+
+### Run the app
+
+Within the virtualenv:
+
+1. Create the db. Default is sqlite
 
 	    python manage.py migrate
 
-4. Create the directory for static files
+1. Create the directory for static files
 
         python manage.py collectstatic
 
-5. Create super user so you can login do Django admin
+1. Create super user so you can login do Django admin
 
         python manage.py createsuperuser
 
-6. You are now able to run the app, the development server will listen at http://localhost:8000
+1. You are now able to run the app, the development server will listen at http://localhost:8000
 
 	    python runserver.py
 
