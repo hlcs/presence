@@ -1,4 +1,4 @@
-""" Parte view del modello mvc su cui si basa django 
+""" Parte view del modello mvc su cui si basa django
 (gestisce i dati del model e l' interazione dell' uente con essi)"""
 
 
@@ -7,6 +7,7 @@ from django.shortcuts import render
 
 # TODO these views should be migrated to a separate HTML5/mobile application
 
+#funzione che mostra l' homepage!!
 def homepage(request):
     if request.user.is_authenticated():
         options = 'disabled="disabled"' if _disable_internal_button(request) else ''

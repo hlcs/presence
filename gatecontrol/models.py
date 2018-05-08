@@ -16,9 +16,11 @@ GATE_STATE_OPEN = 'open'
 GATE_STATE_CLOSED = 'closed'
 
 
+
 class Gate(models.Model):
     name = models.CharField(max_length=100)
     controller_class = models.CharField(max_length=100)
+    #pologia = models.CharField(max_lenght = )
     
     def controller(self):
         module_name, class_name = self.controller_class.rsplit(".", 1)

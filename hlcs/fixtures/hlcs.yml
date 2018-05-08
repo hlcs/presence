@@ -8,4 +8,3 @@
     controller_class: hlcs.gates.HpccExternal
   model: gatecontrol.Gate
   pk: 2
-  
