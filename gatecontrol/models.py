@@ -19,12 +19,12 @@ GATE_STATE_CLOSED = 'closed'
 class Gate(models.Model):
     name = models.CharField(max_length=100)
     controller_class = models.CharField(max_length=100)
-    
+
     def controller(self):
         module_name, class_name = self.controller_class.rsplit(".", 1)
         ControllerClass = getattr(importlib.import_module(module_name), class_name)
         return ControllerClass()
-    
+
     def request_opening(self, user, client):
         logger.info('user %s requested access' % user.username)
         gate_controller = self.controller()
@@ -40,10 +40,10 @@ class Gate(models.Model):
                 access_request.save()
                 raise e
         raise Exception('Unauthorized')
-        
+
     def get_last_accesses(self, limit):
         self.accessrequest.filter(req_state=REQUEST_STATE_OK).order_by('-req_time')[:limit]
-    
+
 
 
 class AccessRequest(models.Model):
@@ -53,7 +53,7 @@ class AccessRequest(models.Model):
     info = models.TextField()
     gate = models.ForeignKey(Gate)
     address = models.TextField(null=True)
-    
+
     def set_client(self, client):
         self.client = client
         self.address = client.request.remote_ip
@@ -76,14 +76,12 @@ class AccessRequest(models.Model):
 
 
 class GateController(object):
-    
+
     def is_managed_by_user(self, user, client):
         raise NotImplementedError()
-    
+
     def get_state(self):
         raise NotImplementedError()
-    
+
     def handle_request(self, access_request):
         raise NotImplementedError()
-
-

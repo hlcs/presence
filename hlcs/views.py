@@ -19,3 +19,7 @@ def homepage(request):
 # schermata informazioni
 def about(request):
     return render(request, 'about.html')
+
+
+def _disable_internal_button(request):
+    return True
