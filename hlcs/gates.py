@@ -20,23 +20,24 @@ GATE_STATE_UNKNOWN =  'unknown'
 
 def setup():
     try:
+        from hlcs.gpio import setup, magnet_input, send_open_pulse
         HpccExternal.setup()
-        HpccInternal.setup()
+        HpccInternal.setup(magnet_input, send_open_pulse)
     except Exception as e:
         traceback.print_exc()
         exit(1)
 
 class HpccExternal(GateController):
-    
+
     state = GATE_STATE_UNKNOWN
-    
+
     @classmethod
     def setup(cls):
         AtlantisModem().check_connection()
 
     def __init__(self, modem=None):
         self.modem = AtlantisModem()
-            
+
     def get_state(self):
         return HpccExternal.state
 
@@ -44,10 +45,10 @@ class HpccExternal(GateController):
         self.controller = self.modem.get_controller()
         self.controller.setup(access_request, self.reset_state)
         HpccExternal.state = GATE_STATE_RING
-        
+
     def reset_state(self):
         HpccExternal.state = GATE_STATE_UNKNOWN
-        
+
     def is_managed_by_user(self, user, client):
         if not user:
             return False
@@ -60,13 +61,18 @@ class HpccExternal(GateController):
 
 class HpccInternal(GateController):
 
-
     @classmethod
-    def setup(cls):
-        from hlcs.gpio import setup, magnet_input, send_open_pulse
+    def setup(cls, magnet_input, send_open_pulse):
         setup()
         cls.magnet_input = magnet_input
         cls.send_open_pulse = send_open_pulse
+
+    # @classmethod
+    # def setup(cls):
+    #     from hlcs.gpio import setup, magnet_input, send_open_pulse
+    #     setup()
+    #     cls.magnet_input = magnet_input
+    #     cls.send_open_pulse = send_open_pulse
 
     def get_state(self):
         is_open = HpccInternal.magnet_input()
@@ -75,7 +81,7 @@ class HpccInternal(GateController):
     def _ip_is_authorized(self, address):
         pattern = getattr(settings, 'IP_PATTERN', '10.87.1.\d+')
         return re.match(pattern, address)
-    
+
     def is_managed_by_user(self, user, client):
         if not user:
             return False
@@ -88,4 +94,3 @@ class HpccInternal(GateController):
     def handle_request(self, access_request):
         HpccInternal.send_open_pulse()
         access_request.done()
-           
