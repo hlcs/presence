@@ -7,7 +7,7 @@ https://docs.djangoproject.com/en/1.6/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.6/ref/settings/
 
-Contiene i settaggi principali del progetto
+Contiene i settaggi principali del progetto (NON TOCARE PER ORA)
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -86,11 +86,13 @@ USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
-
 STATIC_URL = '/static/'
 
+# contiene gli static files PRIMA del managepy collectstatics
+# @SEE i file statici sono quelli di bootstrap, javascript, immagini, ecc...
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'www'),)
 
+# contiene gli static files DOPO il managepy collectstatics
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 LOGGING = {

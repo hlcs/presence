@@ -1,4 +1,8 @@
 '''
+DOPO, credo sia una runserver alternativo
+'''
+
+'''
 Created on 09/giu/2015
 
 @author: spax
@@ -29,7 +33,7 @@ define("settings", default="presence.settings", help="Django settings module")
 """definisce la porta di settaggio"""
 define("port", default=8000, help="linsten port")
 
-""" Funzione di setup delle porte 
+""" Funzione di setup delle porte
     @param settings: settaggi/impostazioni delle porte """
 def setup_gates(settings):
     gate_setup_func = getattr(settings, 'GATE_SETUP_FUNCTION', None)
@@ -48,12 +52,12 @@ def setup_server(settings):
     tornado_app = tornado.web.Application([
             """... tornado che gestisce i file statici"""
             (r'/static/(.*)', tornado.web.StaticFileHandler, {'path':'static'}),
-            """... gatecontrol che gestisce i socket""" 
+            """... gatecontrol che gestisce i socket"""
             (r"/socket", handlers.SocketHandler),
             """... gatecontrol che gestisce i token"""
             (r"/token", handlers.TokenHandler),
             """... ogni altra URL la gestisce django"""
-            ('.*', tornado.web.FallbackHandler, dict(fallback=wsgi_app))], 
+            ('.*', tornado.web.FallbackHandler, dict(fallback=wsgi_app))],
         debug=settings.DEBUG)
     """avvio web server completo"""
     server = tornado.httpserver.HTTPServer(tornado_app)

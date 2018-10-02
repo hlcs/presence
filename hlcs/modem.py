@@ -1,22 +1,23 @@
-"""
-Copyright (C) 2014, Vincenzo Pirrone <pirrone.v@gmail.com>
+# Copyright (C) 2014, Vincenzo Pirrone <pirrone.v@gmail.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+'''
+    classe per la gestione del modem
+'''
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-
-classe per la gestione del modem
-"""
 
 import asyncio
 import sys
@@ -26,7 +27,7 @@ import serial, logging
 
 logger = logging.getLogger(__name__)
 
-#constants
+#costanti
 MSG_OK =  b'OK\r\n'
 MSG_RING = b'\r\nRING\r\n'
 MSG_BUSY = b'BUSY\r\n'
@@ -37,21 +38,23 @@ INIT_COMMANDS = (b'at\r', b'atz\r', b'at*nc9\r', b'atx3\r', b'ats11=60\r', b'ats
 ECHO_WAIT = 1
 INIT_CMD_WAIT = 5
 
+# classe modem
 class Modem:
 
     def get_controller(self):
         pass
 
+# classe controller del modem
 class ModemController:
 
     def setup(self, request, callback=None):
         self.request = request
         self.callback = callback
-            
+
     def on_exit(self):
         if self.callback:
             self.callback()
-        
+
     def handle_ring(self):
         pass
 
@@ -82,7 +85,7 @@ class AtlantisModem(Modem):
     def check_connection(self):
         s = self._get_serial()
         s.close()
-        
+
 
     def get_controller(self):
         logger.debug( 'opening serial port..' )
@@ -95,7 +98,7 @@ class AtlantisModem(Modem):
 # classe per la gestioen dle modem atlantis
 class AtlantisModemController(ModemController):
 
-    
+
     def __init__(self, serial):
         self.serial = serial
 
@@ -131,7 +134,7 @@ class AtlantisModemController(ModemController):
             self.serial.setTimeout(timeout)
             self.add_reader()
             logger.debug('setup complete, controller in listen mode')
-            
+
         #eccezione lanciata nell' errore della configuraizone dle modem
         except Exception as e:
             self.serial.close()
@@ -142,7 +145,7 @@ class AtlantisModemController(ModemController):
         try:
             logger.debug( 'modem in listen mode' )
 
-            
+
             lineIn = self.serial.read(len(MSG_RING))
             if lineIn == MSG_RING:
                 logger.debug( 'RING received' )
@@ -169,7 +172,7 @@ class AtlantisModemController(ModemController):
             logger.exception(e)
             self.request.fail(str(e))
             self.request.client.notify_error(e)
-            
+
         self.on_exit()
             
 
